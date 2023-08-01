@@ -1,9 +1,10 @@
 from django.db import models
 from django.conf import settings
+from common.models import CommonModel
 
 
 # Create your models here.
-class Room(models.Model):
+class Room(CommonModel):
 
     """Room Model Definition"""
 
@@ -32,12 +33,18 @@ class Room(models.Model):
     )
     kind = models.CharField(
         max_length=20,
-        choices=RoomKindChoices,
+        choices=RoomKindChoices.choices,
     )
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    owner = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+    )
+    amenities = models.ManyToManyField(
+        "rooms.Amenity",
+    )
 
 
-class Amenity(models.Model):
+class Amenity(CommonModel):
 
     """Amenity Model Definition"""
 
